@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 // @mui
 import {
   Card,
@@ -30,16 +30,23 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
+import { Link } from 'react-router-dom';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+import avt from '../assets/avatar_1.jpg'
+import Swal from 'sweetalert2';
+import { EditFormContext } from '../context/EditContext';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'name', label: 'Patient Name', alignRight: false },
+  { id: 'dob', label: 'Date of Birth', alignRight: false },
+  { id: 'gender', label: 'Gender', alignRight: false },
+  { id: 'age', label: 'Age', alignRight: false },
+  { id: 'weight', label: 'Weight', alignRight: false },
+  { id: 'height', label: 'Height', alignRight: false },
+  { id: 'act', label: 'Action', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -88,6 +95,42 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [patientList, setPatientList] = useState([]);
+
+  const patientRef = collection(db, "patients")
+
+  const {setFormId} = useContext(EditFormContext);
+
+
+  useEffect(() => {
+    getPatientList();
+  }, [])
+
+  const getPatientList = async () => {
+    try {
+      const data = await getDocs(patientRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setPatientList(filteredData);
+
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  const deletePatients = async (id) => {
+    const patientsDoc = doc(db, "patients", id)
+    Swal.fire(
+      'Deleted!',
+      'Information has been deleted.',
+      'success'
+    )
+    await deleteDoc(patientsDoc);
+    getPatientList();
+  }
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -104,7 +147,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = patientList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -140,9 +183,9 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(patientList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -155,11 +198,14 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Patients
           </Typography>
+          <Link to={'/dashboard/add'}>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
+            Add Patients
           </Button>
+          </Link>
+
         </Stack>
 
         <Card>
@@ -172,15 +218,15 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={patientList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                 {Object.keys(patientList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)).map((id, index) => {
+
+                    const selectedUser = selected.indexOf(patientList[id].name) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
@@ -190,27 +236,37 @@ export default function UserPage() {
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={patientList[id].name} src={avt} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {patientList[id].name}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{patientList[id].dob}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{patientList[id].gender}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{patientList[id].age}</TableCell>
+
+                        <TableCell align="left">{patientList[id].weight}</TableCell>
+
+                        <TableCell align="left">{patientList[id].height}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
+                          <Link to={`edit/${patientList[id].id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                          <IconButton size="large" color="inherit" onClick={() =>setFormId(patientList[id].id)}>
+                            <Iconify icon={'material-symbols:edit-outline'}/>
                           </IconButton>
+                          </Link>
+                          <IconButton size="large" color="inherit" onClick={() => deletePatients(patientList[id].id)}>
+                            <Iconify icon={'material-symbols:delete-outline'} />
+                          </IconButton>
+                          <Link to={`view/${patientList[id].id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                          <IconButton size="large" color="inherit">
+                            <Iconify icon={'teenyicons:pdf-outline'}/>
+                          </IconButton>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     );
@@ -252,7 +308,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={patientList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
