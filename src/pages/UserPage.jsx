@@ -42,10 +42,9 @@ import { EditFormContext } from '../context/EditContext';
 const TABLE_HEAD = [
   { id: 'name', label: 'Patient Name', alignRight: false },
   { id: 'dob', label: 'Date of Birth', alignRight: false },
-  { id: 'gender', label: 'Gender', alignRight: false },
-  { id: 'age', label: 'Age', alignRight: false },
-  { id: 'weight', label: 'Weight', alignRight: false },
-  { id: 'height', label: 'Height', alignRight: false },
+  { id: 'sex', label: 'Sex', alignRight: false },
+  { id: 'bloodtype', label: 'Blood Type', alignRight: false },
+  { id: 'date', label: 'Date of Consultation', alignRight: false },
   { id: 'act', label: 'Action', alignRight: false },
 ];
 
@@ -97,7 +96,7 @@ export default function UserPage() {
 
   const [patientList, setPatientList] = useState([]);
 
-  const patientRef = collection(db, "patients")
+  const recordRef = collection(db, "recordData")
 
   const {setFormId} = useContext(EditFormContext);
 
@@ -108,7 +107,7 @@ export default function UserPage() {
 
   const getPatientList = async () => {
     try {
-      const data = await getDocs(patientRef);
+      const data = await getDocs(recordRef);
       const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
@@ -121,13 +120,13 @@ export default function UserPage() {
   }
 
   const deletePatients = async (id) => {
-    const patientsDoc = doc(db, "patients", id)
+    const recordDoc = doc(db, "recordData", id)
     Swal.fire(
       'Deleted!',
       'Information has been deleted.',
       'success'
     )
-    await deleteDoc(patientsDoc);
+    await deleteDoc(recordDoc);
     getPatientList();
   }
 
@@ -236,22 +235,20 @@ export default function UserPage() {
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={patientList[id].name} src={avt} />
+                            <Avatar alt={patientList[id].fullName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
                             <Typography variant="subtitle2" noWrap>
-                              {patientList[id].name}
+                              {patientList[id].fullName}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{patientList[id].dob}</TableCell>
+                        <TableCell align="left">{patientList[id].bod}</TableCell>
 
-                        <TableCell align="left">{patientList[id].gender}</TableCell>
+                        <TableCell align="left">{patientList[id].sex}</TableCell>
 
-                        <TableCell align="left">{patientList[id].age}</TableCell>
+                        <TableCell align="left">{patientList[id].bloodtype}</TableCell>
 
-                        <TableCell align="left">{patientList[id].weight}</TableCell>
-
-                        <TableCell align="left">{patientList[id].height}</TableCell>
+                        <TableCell align="left">{patientList[id].timeStamp.toDate().toLocaleDateString('en-US')}</TableCell>
 
                         <TableCell align="left">
                           <Link to={`edit/${patientList[id].id}`} style={{ textDecoration: 'none', color: 'black'}}>

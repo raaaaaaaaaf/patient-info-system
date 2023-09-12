@@ -23,15 +23,15 @@ export default function Step3Form() {
       <Typography variant="h6" gutterBottom>
         Findings
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      <Grid container spacing={6}>
+        <Grid item xs={20}>
           <TextField
             required
-            id="findings1"
-            name="findings1"
-            value={formData.findings1}
+            id="diagnosis"
+            name="diagnosis"
+            value={formData.diagnosis}
             onChange={handleInputChange}
-            label="Findings"
+            label="Diagnosis:"
             fullWidth
             variant="standard"
           />
@@ -39,11 +39,35 @@ export default function Step3Form() {
 
         <Grid item xs={12}>
           <TextField
-            id="doctor"
-            name="doctor"
-            value={formData.doctor}
+            id="medication"
+            name="medication"
+            value={formData.medication}
             onChange={handleInputChange}
-            label="Doctor"
+            label="Medication / Treatment:"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="laboratory"
+            name="laboratory"
+            value={formData.laboratory}
+            onChange={handleInputChange}
+            label="Laboratory Findings / Impression:"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="nhcp"
+            name="nhcp"
+            value={formData.nhcp}
+            onChange={handleInputChange}
+            label="Name of Health Care Provider:"
             fullWidth
             variant="standard"
           />
@@ -51,11 +75,11 @@ export default function Step3Form() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="nurse"
-            name="nurse"
-            value={formData.nurse}
+            id="plt"
+            name="plt"
+            value={formData.plt}
             onChange={handleInputChange}
-            label="Nurse/Midwife"
+            label="Perforemd Laboratory Test"
             fullWidth
             variant="standard"
           />

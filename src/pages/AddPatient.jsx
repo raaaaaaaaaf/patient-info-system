@@ -39,29 +39,39 @@ const [activeStep, setActiveStep] = React.useState(0);
 const {formData, setFormData} = useContext(AddFormContext);
 const navigate = useNavigate();
 
-const patientRef = collection(db, "patients")
+const recordRef = collection(db, "recordData")
 
 const addPatient = async () => {
     try {
-        await addDoc(patientRef, {
-            address: formData.address,
-            age: formData.age,
-            bmi: formData.bmi,
-            bp: formData.bp,
-            contact: formData.cp, 
-            dob: formData.dob,
-            doctor: formData.doctor,
-            findings1: formData.findings1,
-            gender: formData.gender,
-            height: formData.height,
-            name: formData.fullName,
-            nurse: formData.nurse,
-            philhealth: formData.philhealth,
-            pr: formData.pr,
-            rr: formData.rr,
-            temp: formData.temp,
-            timeStamp: serverTimestamp(),
-            weight: formData.weight,
+        await addDoc(recordRef, {
+          fullName: formData.fullName,
+          suffix: formData.suffix,
+          sex: formData.sex,
+          bloodtype: formData.bloodtype,
+          age: formData.age,
+          address: formData.address,
+          bod: formData.bod,
+          bop: formData.bop,
+          civil: formData.civil,
+          cp: formData.cp,
+          //Step2
+          bp: formData.bp,
+          temp: formData.temp,
+          pr: formData.pr,
+          weight: formData.weight,
+          height: formData.height,
+          bmi: formData.bmi,
+          visit: formData.visit,
+          type: formData.type,
+          staff: formData.staff,
+          chief: formData.chief,
+          //step3
+          diagnosis: formData.diagnosis,
+          medication: formData.medication,
+          laboratory: formData.laboratory,
+          nhcp: formData.nhcp,
+          plt: formData.plt,
+          timeStamp: serverTimestamp(),
         })
         Swal.fire(
             'Added!',
@@ -122,7 +132,7 @@ return (
                 onClick={addPatient}
                 variant="contained"
                 sx={{ mt: 3, ml: 1 }}
-              > Add Patient
+              > Add Record
             </Button> 
             :
             <Button

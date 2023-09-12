@@ -43,28 +43,38 @@ const navigate = useNavigate();
 
 const editPatients = async (id) => {
     try {
-        const patientDoc = doc(db, "patients", id)
+        const recordDoc = doc(db, "recordData", id)
         const newData = {
-          address: formData.address,
+          fullName: formData.fullName,
+          suffix: formData.suffix,
+          sex: formData.sex,
+          bloodtype: formData.bloodtype,
           age: formData.age,
-          bmi: formData.bmi,
+          address: formData.address,
+          bod: formData.bod,
+          bop: formData.bop,
+          civil: formData.civil,
+          cp: formData.cp,
+          //Step2
           bp: formData.bp,
-          contact: formData.cp, 
-          dob: formData.dob,
-          doctor: formData.doctor,
-          findings1: formData.findings1,
-          gender: formData.gender,
-          height: formData.height,
-          name: formData.fullName,
-          nurse: formData.nurse,
-          philhealth: formData.philhealth,
-          pr: formData.pr,
-          rr: formData.rr,
           temp: formData.temp,
-          timeStamp: serverTimestamp(),
+          pr: formData.pr,
           weight: formData.weight,
+          height: formData.height,
+          bmi: formData.bmi,
+          visit: formData.visit,
+          type: formData.type,
+          staff: formData.staff,
+          chief: formData.chief,
+          //step3
+          diagnosis: formData.diagnosis,
+          medication: formData.medication,
+          laboratory: formData.laboratory,
+          nhcp: formData.nhcp,
+          plt: formData.plt,
+          timeStamp: serverTimestamp(),
         }
-        await updateDoc(patientDoc, newData);
+        await updateDoc(recordDoc, newData);
         Swal.fire(
             'Edited!',
             'Information has been edited.',

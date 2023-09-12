@@ -6,10 +6,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useContext } from 'react';
 import { EditFormContext } from '../../../context/EditContext';
-import { useEffect } from 'react';
-import { addDoc, collection, serverTimestamp, doc, updateDoc, getDocs } from 'firebase/firestore';
-import { db } from '../../../firebase/firebaseConfig';
-import { useParams } from 'react-router-dom';
 
 export default function Step1Form() {
     const {formData, setFormData} = useContext(EditFormContext);
@@ -36,7 +32,7 @@ export default function Step1Form() {
             name="fullName"
             value={formData.fullName}
             onChange={handleInputChange}
-            label="Full name"
+            label="Full Name"
             fullWidth
             autoComplete="given-name"
             variant="standard"
@@ -44,12 +40,36 @@ export default function Step1Form() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            required
-            id="gender"
-            name="gender"
-            value={formData.gender}
+            id="suffix"
+            name="suffix"
+            value={formData.suffix}
             onChange={handleInputChange}
-            label="Gender"
+            label="Suffix (e.g.Js.,Sr.,II,III)"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="sex"
+            name="sex"
+            value={formData.sex}
+            onChange={handleInputChange}
+            label="Sex"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="bloodtype"
+            name="bloodtype"
+            value={formData.bloodtype}
+            onChange={handleInputChange}
+            label="Blood Type"
             fullWidth
             variant="standard"
           />
@@ -69,48 +89,61 @@ export default function Step1Form() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="cp"
-            name="cp"
-            type="number"
-            value={formData.cp}
-            onChange={handleInputChange}
-            label="Contact No."
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="dob"
-            name="dob"
-            value={formData.dob}
-            onChange={handleInputChange}
-            label="Date of Birth"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="philhealth"
-            name="philhealth"
-            type="number"
-            value={formData.philhealth}
-            onChange={handleInputChange}
-            label="PHILHEALTH"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
             required
             id="address"
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            label="Address"
+            label="Residential Address"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="bod"
+            name="bod"
+            value={formData.bod}
+            onChange={handleInputChange}
+            label="Birth Date"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="bop"
+            name="bop"
+            value={formData.bop}
+            onChange={handleInputChange}
+            label="Birth Place"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="civil"
+            name="civil"
+            value={formData.civil}
+            onChange={handleInputChange}
+            label="Civil Status"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="cp"
+            name="cp"
+            value={formData.cp}
+            onChange={handleInputChange}
+            label="Contact No."
             fullWidth
             variant="standard"
           />

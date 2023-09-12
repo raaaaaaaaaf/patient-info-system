@@ -21,19 +21,28 @@ import EditPatients from './pages/EditPatient.jsx';
 
 export default function Router() {
 
+  const {currentUser} = useContext(AuthContext);
+
+  const ProtectedRoute = ({ children }) => {
+    if (!currentUser) {
+      return <Navigate to={'/login'} replace/>
+    }
+    return children
+  }
+
 
   const routes = useRoutes([
     {
       path: '/dashboard',
-      element:  <DashboardLayout />,
+      element:  <ProtectedRoute><DashboardLayout /></ProtectedRoute>,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'add', element: <AddPatient />},
-        { path: 'user', element:  <UserPage />},
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
-        { path: 'user/edit/:id', element: <EditPatients />,},
+        { path: 'app', element: <ProtectedRoute><DashboardAppPage /></ProtectedRoute> },
+        { path: 'add', element: <ProtectedRoute><AddPatient /></ProtectedRoute>},
+        { path: 'user', element:  <ProtectedRoute><UserPage /></ProtectedRoute>},
+        { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute>},
+        { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute>},
+        { path: 'user/edit/:id', element: <ProtectedRoute><EditPatients /></ProtectedRoute>},
       ],
     },
     {

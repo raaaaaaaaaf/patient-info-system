@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { EditFormContext } from '../../../context/EditContext';
 
 export default function Step2Form() {
-  const {formData, setFormData} = useContext(EditFormContext);
+    const {formData, setFormData} = useContext(EditFormContext);
 
     // Define the handleInputChange function to update formData
     const handleInputChange = (e) => {
@@ -24,6 +24,19 @@ export default function Step2Form() {
         VITAL SIGN/ASSESSMENT
       </Typography>
       <Grid container spacing={3}>
+        
+      <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="bp"
+            name="bp"
+            value={formData.bp}
+            onChange={handleInputChange}
+            label="Blood Pressure"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
@@ -46,33 +59,6 @@ export default function Step2Form() {
             value={formData.pr}
             onChange={handleInputChange}
             label="Pulse Rate"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="bp"
-            name="bp"
-            value={formData.bp}
-            onChange={handleInputChange}
-            label="Blood Pressure"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="rr"
-            name="rr"
-            type="number"
-            value={formData.rr}
-            onChange={handleInputChange}
-            label="Respiration Rate"
             fullWidth
             variant="standard"
           />
@@ -114,6 +100,56 @@ export default function Step2Form() {
             value={formData.bmi}
             onChange={handleInputChange}
             label="Body Mass Index"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="visit"
+            name="visit"
+            value={formData.visit}
+            onChange={handleInputChange}
+            label="Nature of visit"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="type"
+            name="type"
+            value={formData.type}
+            onChange={handleInputChange}
+            label="Type of Consultation / Purpose of visit"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="staff"
+            name="staff"
+            value={formData.staff}
+            onChange={handleInputChange}
+            label="Name of Attending Provider"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="chief"
+            name="chief"
+            value={formData.chief}
+            onChange={handleInputChange}
+            label="Chief Complaints"
             fullWidth
             variant="standard"
           />

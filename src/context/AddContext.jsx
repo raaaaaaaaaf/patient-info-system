@@ -6,27 +6,35 @@ export const AddFormContext = createContext();
 
 export function AddFormProvider ({children}) {
     const [formData, setFormData] = useState({
-    // Step1
-        fullName: "",
-        age: "",
-        dob: "",
-        gender: "",
-        philhealth: "",
-        address: "",
-        cp: "",
-    // Step 2
-        temp: "",
-        bp: "",
-        weight: "",
-        height: "",
-        bmi: "",
-        pr: "",
-        rr: "",
+    //Step1
+    fullName: "",
+    suffix: "",
+    sex: "",
+    bloodtype: "",
+    age: "",
+    address: "",
+    bod: "",
+    bop: "",
+    civil: "",
+    cp: "",
+    //Step2
+    bp: "",
+    temp: "",
+    pr: "",
+    weight: "",
+    height: "",
+    bmi: "",
+    visit: "",
+    type: "",
+    staff: "",
+    chief: "",
+    //step3
+    diagnosis: "",
+    medication: "",
+    laboratory: "",
+    nhcp: "",
+    plt: "",
 
-    // Step 3
-        findings1: "",
-        doctor:"",
-        nurse:"",
 
     })
     return (

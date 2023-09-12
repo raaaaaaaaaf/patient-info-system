@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { EditFormContext } from '../../../context/EditContext';
 
 export default function Step3Form() {
-  const {formData, setFormData} = useContext(EditFormContext);
+    const {formData, setFormData} = useContext(EditFormContext);
 
     // Define the handleInputChange function to update formData
     const handleInputChange = (e) => {
@@ -20,48 +20,72 @@ export default function Step3Form() {
     };
   return (
     <React.Fragment>
-    <Typography variant="h6" gutterBottom>
-      Findings
-    </Typography>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <TextField
-          required
-          id="findings1"
-          name="findings1"
-          value={formData.findings1}
-          onChange={handleInputChange}
-          label="Findings"
-          fullWidth
-          variant="standard"
-        />
-      </Grid>
+      <Typography variant="h6" gutterBottom>
+        Findings
+      </Typography>
+      <Grid container spacing={6}>
+        <Grid item xs={20}>
+          <TextField
+            required
+            id="diagnosis"
+            name="diagnosis"
+            value={formData.diagnosis}
+            onChange={handleInputChange}
+            label="Diagnosis:"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
 
-      <Grid item xs={12}>
-        <TextField
-          id="doctor"
-          name="doctor"
-          value={formData.doctor}
-          onChange={handleInputChange}
-          label="Doctor"
-          fullWidth
-          variant="standard"
-        />
+        <Grid item xs={12}>
+          <TextField
+            id="medication"
+            name="medication"
+            value={formData.medication}
+            onChange={handleInputChange}
+            label="Medication / Treatment:"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="laboratory"
+            name="laboratory"
+            value={formData.laboratory}
+            onChange={handleInputChange}
+            label="Laboratory Findings / Impression:"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="nhcp"
+            name="nhcp"
+            value={formData.nhcp}
+            onChange={handleInputChange}
+            label="Name of Health Care Provider:"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="plt"
+            name="plt"
+            value={formData.plt}
+            onChange={handleInputChange}
+            label="Perforemd Laboratory Test"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          required
-          id="nurse"
-          name="nurse"
-          value={formData.nurse}
-          onChange={handleInputChange}
-          label="Nurse/Midwife"
-          fullWidth
-          variant="standard"
-        />
-      </Grid>
-      
-    </Grid>
-  </React.Fragment>
+    </React.Fragment>
   );
 }
