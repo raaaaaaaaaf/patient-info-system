@@ -1,42 +1,46 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext, useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
+import account from '../../../_mock/account';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../../firebase/firebaseConfig';
-import { useNavigate, Link } from 'react-router-dom';
-import avtimg from '../../../assets/avatar_1.jpg'
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
-
+import Loading from '../../../components/loading/Loading';
+import { auth } from '../../../firebase/firebaseConfig';
 // ----------------------------------------------------------------------
+
 
 const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: 'eva:home-fill',
   },
-
+  {
+    label: 'Profile',
+    icon: 'eva:person-fill',
+  },
+  {
+    label: 'Settings',
+    icon: 'eva:settings-2-fill',
+  },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const {currentUser, userData, loading} = useContext(AuthContext);
   const nav = useNavigate();
-
-  const { currentUser } = useContext(AuthContext);
-  
-
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = async () => {
+  const handleClose = () => {
     setOpen(null);
   };
-
   const logout = async () => {
     try {
       await signOut(auth);
@@ -48,6 +52,10 @@ export default function AccountPopover() {
 
   return (
     <>
+        {loading ? (
+      <div>Loading...</div>
+    ) : (
+      <>
       <IconButton
         onClick={handleOpen}
         sx={{
@@ -65,7 +73,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={currentUser.photoURL ?? avtimg} alt="photoURL" />
+        <Avatar src={currentUser.photoURL} alt="photoURL" />
       </IconButton>
 
       <Popover
@@ -87,22 +95,24 @@ export default function AccountPopover() {
           },
         }}
       >
-      {currentUser ? (
-          <Box sx={{ my: 1.5, px: 2.5 }}>
+        <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-          {currentUser.displayName ?? "Loading..."}
+            {userData.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {currentUser.email ?? "Loading..."}
+            {userData.email}
           </Typography>
         </Box>
-      ) : (
-          <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-            Loading...
-          </Typography>
-        </Box>
-      )}
+
+        <Divider sx={{ borderStyle: 'dashed' }} />
+
+        <Stack sx={{ p: 1 }}>
+          {MENU_OPTIONS.map((option) => (
+            <MenuItem key={option.label} onClick={handleClose}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
@@ -111,5 +121,9 @@ export default function AccountPopover() {
         </MenuItem>
       </Popover>
     </>
+    )}
+    </>
+
+
   );
 }

@@ -14,6 +14,11 @@ import { AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
 import AddPatient from './pages/AddPatient';
 import EditPatients from './pages/EditPatient.jsx';
+import Loading from './components/loading/Loading';
+import PatientRecordPage from './pages/PatientRecordPage';
+import PDFRecord from './pages/PDFRecord';
+import Scheduler from './pages/Scheduler';
+
 
 // ----------------------------------------------------------------------
 
@@ -21,12 +26,16 @@ import EditPatients from './pages/EditPatient.jsx';
 
 export default function Router() {
 
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser, loading, userData} = useContext(AuthContext);
 
-  const ProtectedRoute = ({ children }) => {
+  const ProtectedRoute = ({ children, requiredRole }) => {
+    if (loading) {
+      return <Loading/>
+    }
     if (!currentUser) {
       return <Navigate to={'/login'} replace/>
     }
+
     return children
   }
 
@@ -34,17 +43,21 @@ export default function Router() {
   const routes = useRoutes([
     {
       path: '/dashboard',
-      element:  <ProtectedRoute><DashboardLayout /></ProtectedRoute>,
+      element:  <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <ProtectedRoute><DashboardAppPage /></ProtectedRoute> },
-        { path: 'add', element: <ProtectedRoute><AddPatient /></ProtectedRoute>},
-        { path: 'user', element:  <ProtectedRoute><UserPage /></ProtectedRoute>},
-        { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute>},
-        { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute>},
-        { path: 'user/edit/:id', element: <ProtectedRoute><EditPatients /></ProtectedRoute>},
+        { element:<ProtectedRoute ><Navigate to="/dashboard/app" /></ProtectedRoute> , index: true },
+        { path: 'app', element: <ProtectedRoute ><DashboardAppPage /></ProtectedRoute> },
+        { path: 'add', element: <ProtectedRoute ><AddPatient /></ProtectedRoute>},
+        { path: 'user', element:  <ProtectedRoute ><UserPage /></ProtectedRoute>},
+        { path: 'patient', element:  <ProtectedRoute ><PatientRecordPage /></ProtectedRoute>},
+        { path: 'products', element: <ProtectedRoute ><ProductsPage /></ProtectedRoute>},
+        { path: 'blog', element: <ProtectedRoute ><BlogPage /></ProtectedRoute>},
+        { path: 'schedule', element: <ProtectedRoute ><Scheduler /></ProtectedRoute>},
+        { path: 'patient/edit/:id', element: <ProtectedRoute ><EditPatients /></ProtectedRoute>},
+        { path: 'patient/view/:id', element: <ProtectedRoute ><PDFRecord /></ProtectedRoute>},
       ],
     },
+
     {
       path: 'login',
       element: <LoginPage />,
@@ -53,6 +66,7 @@ export default function Router() {
       path: 'register',
       element: <RegisterPage />,
     },
+
     {
       element: <SimpleLayout />,
       children: [

@@ -10,8 +10,8 @@ import { useChart } from '../../../components/chart';
 AppWebsiteVisits.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
-  chartData: PropTypes.array.isRequired,
-  chartLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  chartData: PropTypes.string.isRequired,
+  chartLabels: PropTypes.string,
 };
 
 export default function AppWebsiteVisits({ title, subheader, chartLabels, chartData, ...other }) {

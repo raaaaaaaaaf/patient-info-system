@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-import { auth } from '../../../firebase/firebaseConfig';
 // mock
-
+import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
@@ -14,9 +13,11 @@ import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
-import navConfig from './config';
-import avtimg from '../../../assets/avatar_1.jpg'
+import adminConfig from './adminconfig';
+import userConfig from './userConfig';
 import { AuthContext } from '../../../context/AuthContext';
+import Loading from '../../../components/loading/Loading';
+
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -38,7 +39,8 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser, userData, loading} = useContext(AuthContext);
+
   const isDesktop = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -49,6 +51,10 @@ export default function Nav({ openNav, onCloseNav }) {
   }, [pathname]);
 
   const renderContent = (
+<>
+      {loading ? (
+    <Loading/>
+       ) : (
     <Scrollbar
       sx={{
         height: 1,
@@ -62,38 +68,31 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-          <Avatar src={currentUser.photoURL ?? avtimg} alt="photoURL" />
-          {currentUser ? (
+            <Avatar src={currentUser.photoURL} alt="photoURL" />
+
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-              {currentUser.displayName ?? "Loading..."}
+                {userData.displayName}
               </Typography>
 
-              <Typography variant="body2" sx={{ color: 'text.secondary' }} >
-              Admin
-              </Typography>
-            </Box>
-
-          ) : (
-            <Box sx={{ ml: 2 }}>
-
-              <Typography variant="body2" sx={{ color: 'text.secondary' }} >
-              Loading...
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {userData.role}
               </Typography>
             </Box>
-
-          )}
-
           </StyledAccount>
         </Link>
       </Box>
-
-      <NavSection data={navConfig} />
-
+      {userData.role === 'Admin' || userData.role === 'Health Worker' ? (
+          <NavSection data={adminConfig} />
+        ) : (
+          <NavSection data={userConfig} />
+      )}
       <Box sx={{ flexGrow: 1 }} />
 
-
     </Scrollbar>
+  )}
+</>
+
   );
 
   return (

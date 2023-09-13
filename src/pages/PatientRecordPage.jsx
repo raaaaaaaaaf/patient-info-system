@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 // @mui
 import {
   Card,
@@ -30,15 +30,22 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
-import { collection, getDoc, getDocs, doc } from 'firebase/firestore';
+import { Link } from 'react-router-dom';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import avt from '../assets/avatar_1.jpg'
+import Swal from 'sweetalert2';
+import { EditFormContext } from '../context/EditContext';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'email', label: 'E-mail', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'name', label: 'Patient Name', alignRight: false },
+  { id: 'dob', label: 'Date of Birth', alignRight: false },
+  { id: 'sex', label: 'Sex', alignRight: false },
+  { id: 'bloodtype', label: 'Blood Type', alignRight: false },
+  { id: 'date', label: 'Date of Consultation', alignRight: false },
+  { id: 'act', label: 'Action', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -72,7 +79,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
+export default function PatientRecordPage() {
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -87,26 +94,41 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [userList, setUserList] = useState([])
+  const [patientList, setPatientList] = useState([]);
 
-  const userRef = collection(db, "users")
+  const recordRef = collection(db, "recordData")
+
+  const {setFormId} = useContext(EditFormContext);
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-       const data = await getDocs(userRef)
-       const filteredData = data.docs.map((doc) => ({
+    getPatientList();
+  }, [])
+
+  const getPatientList = async () => {
+    try {
+      const data = await getDocs(recordRef);
+      const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
-      setUserList(filteredData)
+      setPatientList(filteredData);
 
-      } catch(err) {
-        console.error(err);
-      }
+    } catch(err) {
+      console.error(err);
     }
-    fetchData()
-  }, [])
+  }
+
+  const deletePatients = async (id) => {
+    const recordDoc = doc(db, "recordData", id)
+    Swal.fire(
+      'Deleted!',
+      'Information has been deleted.',
+      'success'
+    )
+    await deleteDoc(recordDoc);
+    getPatientList();
+  }
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -124,7 +146,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = userList.map((n) => n.name);
+      const newSelecteds = patientList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -160,9 +182,9 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patientList.length) : 0;
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(patientList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -175,7 +197,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Patients
           </Typography>
         </Stack>
 
@@ -189,33 +211,54 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={patientList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
-                    const selectedUser = selected.indexOf(user.displayName) !== -1;
+                 {Object.keys(patientList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)).map((id, index) => {
+
+                    const selectedUser = selected.indexOf(index) !== -1;
 
                     return (
                       <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, index)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={user.displayName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
+                            <Avatar alt={patientList[id].fullName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
                             <Typography variant="subtitle2" noWrap>
-                              {user.displayName}
+                              {patientList[id].fullName}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{user.email}</TableCell>
+                        <TableCell align="left">{patientList[id].bod}</TableCell>
 
-                        <TableCell align="left">{user.role}</TableCell>
+                        <TableCell align="left">{patientList[id].sex}</TableCell>
+
+                        <TableCell align="left">{patientList[id].bloodtype}</TableCell>
+
+                        <TableCell align="left">{patientList[id].timeStamp.toDate().toLocaleDateString('en-US')}</TableCell>
+
+                        <TableCell align="left">
+                          <Link to={`edit/${patientList[id].id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                          <IconButton size="large" color="inherit" onClick={() =>setFormId(patientList[id].id)}>
+                            <Iconify icon={'material-symbols:edit-outline'}/>
+                          </IconButton>
+                          </Link>
+                          <IconButton size="large" color="inherit" onClick={() => deletePatients(patientList[id].id)}>
+                            <Iconify icon={'material-symbols:delete-outline'} />
+                          </IconButton>
+                          <Link to={`view/${patientList[id].id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                          <IconButton size="large" color="inherit">
+                            <Iconify icon={'carbon:view'}/>
+                          </IconButton>
+                          </Link>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -256,7 +299,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={patientList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

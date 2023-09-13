@@ -21,7 +21,7 @@ export default function Step2Form() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        VITAL SIGN/ASSESSMENT
+        ASSESSMENT
       </Typography>
       <Grid container spacing={3}>
         

@@ -78,7 +78,7 @@ const addPatient = async () => {
             'Information has been added.',
             'success'
           )
-        navigate('/dashboard/user')
+        navigate('/dashboard/patient')
     } catch(err) {
         console.error(err);
     }
