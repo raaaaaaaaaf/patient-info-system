@@ -1,4 +1,5 @@
 // component
+import Iconify from '../../../components/iconify';
 import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -8,13 +9,18 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 const userConfig = [
   {
     title: 'dashboard',
-    path: '/client/app',
-    icon: icon('ic_analytics'),
+    path: '/officer/app',
+    icon: <Iconify icon={'carbon:analytics'}/>,
   },
   {
-    title: 'Schedule Appointment',
-    path: '/client/schedule',
-    icon: icon('ic_user'),
+    title: 'Patients Information',
+    path: '/officer/patient',
+    icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
+  },
+  {
+    title: 'Add Patient Information',
+    path: '/officer/add',
+    icon: <Iconify icon={'fluent:document-add-48-regular'}/>,
   },
 
 ];

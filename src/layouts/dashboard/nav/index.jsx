@@ -17,7 +17,7 @@ import adminConfig from './adminconfig';
 import userConfig from './userConfig';
 import { AuthContext } from '../../../context/AuthContext';
 import Loading from '../../../components/loading/Loading';
-
+import avtPhoto from '../../../assets/avatar_default.jpg'
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -53,7 +53,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderContent = (
 <>
       {loading ? (
-    <Loading/>
+    <div>Loading...</div>
        ) : (
     <Scrollbar
       sx={{
@@ -68,11 +68,11 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={currentUser.photoURL} alt="photoURL" />
+            <Avatar src={currentUser.photoURL ?? avtPhoto} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {userData.displayName}
+                {userData.displayName ?? avt}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -82,7 +82,7 @@ export default function Nav({ openNav, onCloseNav }) {
           </StyledAccount>
         </Link>
       </Box>
-      {userData.role === 'Admin' || userData.role === 'Health Worker' ? (
+      {userData.role === 'Admin' ? (
           <NavSection data={adminConfig} />
         ) : (
           <NavSection data={userConfig} />

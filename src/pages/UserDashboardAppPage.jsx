@@ -20,19 +20,17 @@ import {
 import { useEffect, useState } from 'react';
 import { collection, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import Loading from '../components/loading/Loading';
 
 
 // ----------------------------------------------------------------------
 
-export default function DashboardAppPage() {
+export default function UserDashboardAppPage() {
   const theme = useTheme();
   const [userCount, setUserCount] = useState(0);
   const [patientCount, setPatientCount] = useState(0);
   const [lastMonth, setLastMonth] = useState(null)
   const [prevMonth, setPrevMonth] = useState(null)
   const [diff, setDiff] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,24 +66,15 @@ export default function DashboardAppPage() {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
-
   return (
     <>
       <Helmet>
         <title> Dashboard | Patient Information </title>
       </Helmet>
 
-      {loading ? (
-        <Loading/>
-      ) : (
-        <Container maxWidth="xl">
+      <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Patient Information System
+          Hi, Health Worker
         </Typography>
 
         <Grid container spacing={3}>
@@ -112,9 +101,6 @@ export default function DashboardAppPage() {
 
         </Grid>
       </Container>
-      )}
-
-
     </>
   );
 }

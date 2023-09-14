@@ -5,10 +5,11 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 // mocks_
 import account from '../../../_mock/account';
 import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import Loading from '../../../components/loading/Loading';
 import { auth } from '../../../firebase/firebaseConfig';
+import avtPhoto from '../../../assets/avatar_default.jpg'
 // ----------------------------------------------------------------------
 
 
@@ -16,14 +17,6 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
   },
 ];
 
@@ -73,7 +66,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={currentUser.photoURL} alt="photoURL" />
+        <Avatar src={currentUser.photoURL ?? avtPhoto} alt="photoURL" />
       </IconButton>
 
       <Popover
@@ -107,14 +100,14 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
+          <Link to={'/dashboard/app'} style={{ textDecoration: 'none', color: 'black'}}>
+            <MenuItem >
+             Home
             </MenuItem>
-          ))}
+          </Link>
+
         </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={logout} sx={{ m: 1 }}>
           Logout

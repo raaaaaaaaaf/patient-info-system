@@ -32,6 +32,7 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 import { collection, getDoc, getDocs, doc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import Loading from '../components/loading/Loading';
 
 // ----------------------------------------------------------------------
 
@@ -89,6 +90,8 @@ export default function UserPage() {
 
   const [userList, setUserList] = useState([])
 
+  const [loading, setLoading] = useState(true)
+
   const userRef = collection(db, "users")
 
   useEffect(() => {
@@ -108,9 +111,11 @@ export default function UserPage() {
     fetchData()
   }, [])
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [])
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -178,91 +183,96 @@ export default function UserPage() {
             User
           </Typography>
         </Stack>
-
+      {loading ? (
+        <Loading/>
+      ) : (
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+        <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
-                    const selectedUser = selected.indexOf(user.displayName) !== -1;
+        <Scrollbar>
+          <TableContainer sx={{ minWidth: 800 }}>
+            <Table>
+              <UserListHead
+                order={order}
+                orderBy={orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={userList.length}
+                numSelected={selected.length}
+                onRequestSort={handleRequestSort}
+                onSelectAllClick={handleSelectAllClick}
+              />
+              <TableBody>
+                {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
+                  const selectedUser = selected.indexOf(user.displayName) !== -1;
 
-                    return (
-                      <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={user.displayName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
-                            <Typography variant="subtitle2" noWrap>
-                              {user.displayName}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{user.email}</TableCell>
-
-                        <TableCell align="left">{user.role}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
+                  return (
+                    <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                       </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
+                      <TableCell component="th" scope="row" padding="none">
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Avatar alt={user.displayName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
+                          <Typography variant="subtitle2" noWrap>
+                            {user.displayName}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+
+                      <TableCell align="left">{user.email}</TableCell>
+
+                      <TableCell align="left">{user.role}</TableCell>
+                    </TableRow>
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Typography variant="h6" paragraph>
+                          Not found
+                        </Typography>
+
+                        <Typography variant="body2">
+                          No results found for &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Try checking for typos or using complete words.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </TableContainer>
+        </Scrollbar>
+
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={USERLIST.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Card>
+
+      )}
+
       </Container>
 
       <Popover

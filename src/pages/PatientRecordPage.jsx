@@ -36,6 +36,7 @@ import { db } from '../firebase/firebaseConfig';
 import avt from '../assets/avatar_1.jpg'
 import Swal from 'sweetalert2';
 import { EditFormContext } from '../context/EditContext';
+import Loading from '../components/loading/Loading';
 
 // ----------------------------------------------------------------------
 
@@ -100,6 +101,8 @@ export default function PatientRecordPage() {
 
   const {setFormId} = useContext(EditFormContext);
 
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     getPatientList();
@@ -130,9 +133,13 @@ export default function PatientRecordPage() {
     getPatientList();
   }
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [])
+
+
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -201,6 +208,10 @@ export default function PatientRecordPage() {
           </Typography>
         </Stack>
 
+      {loading ? (
+        <Loading/>
+      ) : (
+        
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -306,6 +317,8 @@ export default function PatientRecordPage() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
+      )}
+
       </Container>
 
       <Popover
