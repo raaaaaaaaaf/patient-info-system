@@ -79,7 +79,7 @@ export default function Step3Form() {
             name="plt"
             value={formData.plt}
             onChange={handleInputChange}
-            label="Perforemd Laboratory Test"
+            label="Performed Laboratory Test"
             fullWidth
             variant="standard"
           />
