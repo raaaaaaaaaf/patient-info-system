@@ -100,7 +100,7 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
             Brgy San Juan Health Clinic
             </Typography>
-            <img src="/assets/illustrations/patient_info.svg" alt="login" />
+            <img src="/assets/illustrations/patient_info.png" alt="login" />
           </StyledSection>
         )}
 

@@ -11,7 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import { AuthContext } from './context/AuthContext';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AddPatient from './pages/AddPatient';
 import EditPatients from './pages/EditPatient.jsx';
 import Loading from './components/loading/Loading';
@@ -28,14 +28,28 @@ import UserDashboardAppPage from './pages/UserDashboardAppPage';
 
 export default function Router() {
 
-
-
   const ProtectedRoute = ({ children, requiredRole }) => {
     const {currentUser, loading, userData} = useContext(AuthContext);
-    console.log('currentUser:', currentUser);
-    console.log('loading:', loading);
+    const [timedOut, setTimedOut] = useState(false);
+  
+    useEffect(() => {
+      // Set a timeout to consider the loading taking too long
+      const timeoutId = setTimeout(() => {
+        setTimedOut(true);
+      }, 2000); // 5 seconds timeout (adjust as needed)
+  
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, []);
+  
     if (loading) {
-      return <Loading/>
+      if (timedOut) {
+        // Redirect to login page if loading takes too long
+        return <Navigate to="/login" replace />;
+      } else {
+        return <div>...</div>;
+      }
     }
     if (!currentUser ) {
       return <Navigate to={'/login'} replace/>

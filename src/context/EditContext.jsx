@@ -30,9 +30,11 @@ export function EditFormProvider ({children}) {
     });
 
     const [formId, setFormId] = useState("");
+
+    const [editData, setEditData] = useState({})
     
     return (
-        <EditFormContext.Provider value={{formData, setFormData, formId, setFormId}}>
+        <EditFormContext.Provider value={{formData, setFormData, formId, setFormId, editData, setEditData}}>
             {children}
         </EditFormContext.Provider>
     )

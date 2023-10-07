@@ -1,23 +1,49 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { useContext } from 'react';
-import { EditFormContext } from '../../../context/EditContext';
+import * as React from "react";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { useContext } from "react";
+import { EditFormContext } from "../../../context/EditContext";
 
 export default function Step1Form() {
-    const {formData, setFormData} = useContext(EditFormContext);
+  const { formData, setFormData, editData } = useContext(EditFormContext);
 
-      // Define the handleInputChange function to update formData
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-        }));
-    };
+  // Define the handleInputChange function to update formData
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  // Define the specific fields you want to populate from editData
+  const fieldsToPopulate = 
+  [
+    "fullName", 
+    "suffix",
+    "sex",
+    "bloodtype",
+    "age",
+    "address",
+    "bod",
+    "bop",
+    "civil",
+    "cp",
+
+  ];
+
+  // Use useEffect to populate only the specific fields from editData
+  React.useEffect(() => {
+    const updatedFormData = { ...formData };
+
+    for (const field of fieldsToPopulate) {
+      updatedFormData[field] = editData[field];
+    }
+
+    setFormData(updatedFormData);
+  }, [editData]);
 
   return (
     <React.Fragment>
@@ -148,7 +174,6 @@ export default function Step1Form() {
             variant="standard"
           />
         </Grid>
-
       </Grid>
     </React.Fragment>
   );

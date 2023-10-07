@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { EditFormContext } from '../../../context/EditContext';
 
 export default function Step2Form() {
-    const {formData, setFormData} = useContext(EditFormContext);
+    const {formData, setFormData, editData} = useContext(EditFormContext);
 
     // Define the handleInputChange function to update formData
     const handleInputChange = (e) => {
@@ -18,6 +18,31 @@ export default function Step2Form() {
         [name]: value,
         }));
     };
+    const fieldsToPopulate = 
+    [
+      "bp", 
+      "temp",
+      "pr",
+      "weight",
+      "height",
+      "bmi",
+      "visit",
+      "type",
+      "staff",
+      "chief",
+    ];
+  
+    // Use useEffect to populate only the specific fields from editData
+    React.useEffect(() => {
+      const updatedFormData = { ...formData };
+  
+      for (const field of fieldsToPopulate) {
+        updatedFormData[field] = editData[field];
+      }
+  
+      setFormData(updatedFormData);
+    }, [editData]);
+    
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

@@ -87,13 +87,13 @@ const palette = {
   },
   background: {
     paper: '#fff',
-    default: GREY[100],
+    default: '#F7F7F7',
     neutral: GREY[200],
   },
   action: {
     active: GREY[600],
     hover: alpha(GREY[500], 0.08),
-    selected: alpha(GREY[500], 0.16),
+    selected: '#EBF8F4',
     disabled: alpha(GREY[500], 0.8),
     disabledBackground: alpha(GREY[500], 0.24),
     focus: alpha(GREY[500], 0.24),

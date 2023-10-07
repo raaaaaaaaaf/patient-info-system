@@ -68,7 +68,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.displayName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -202,7 +202,7 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
               />
               <TableBody>
-                {userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
+                {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
                   const selectedUser = selected.indexOf(user.displayName) !== -1;
 
                   return (
