@@ -34,6 +34,7 @@ export default function LoginForm() {
         showConfirmButton: false,
         timer: 1500,
       });
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       let customErrorMessage = "An error occurred.";
     
@@ -51,7 +52,7 @@ export default function LoginForm() {
       });
       console.error(error);
     }
-    navigate("/dashboard", { replace: true });
+    
   };
 
   return (

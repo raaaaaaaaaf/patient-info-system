@@ -45,6 +45,7 @@ export default function RegisterForm() {
         showConfirmButton: false,
         timer: 1500,
       });
+      navigate("/login", { replace: true });
     } catch (error) {
       let customErrorMessage = "An error occurred.";
 
@@ -62,7 +63,7 @@ export default function RegisterForm() {
       });
       console.error(error);
     }
-    navigate("/login", { replace: true });
+    
   };
 
   return (
