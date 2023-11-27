@@ -83,7 +83,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Pregnancy Monitoring System </title>
+        <title> Login | Brgy San Juan </title>
       </Helmet>
 
       <StyledRoot>

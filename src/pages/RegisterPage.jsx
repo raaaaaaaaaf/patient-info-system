@@ -84,7 +84,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title> Register | Pregnancy Monitoring System </title>
+        <title> Register | Brgy San Juan </title>
       </Helmet>
 
       <StyledRoot>
