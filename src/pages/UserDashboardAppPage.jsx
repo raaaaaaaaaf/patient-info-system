@@ -92,8 +92,8 @@ export default function UserDashboardAppPage() {
               title="Patient Visit"
               subheader={`${diff}% more than last month`}
               chartData={[
-                { label: 'September', value: `${lastMonth}` },
-                { label: 'August', value: `${prevMonth}` },
+                { label: 'This Month', value: `${lastMonth}` },
+                { label: 'Last Month', value: `${prevMonth}` },
                 
               ]}
             />

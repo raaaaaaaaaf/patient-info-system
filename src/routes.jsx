@@ -19,6 +19,8 @@ import PatientRecordPage from './pages/PatientRecordPage';
 import PDFRecord from './pages/PDFRecord';
 import Scheduler from './pages/Scheduler';
 import UserDashboardAppPage from './pages/UserDashboardAppPage';
+import PatientViewPage from './pages/PatientViewPage.jsx';
+import LoginPage1 from './pages/login.jsx';
 
 
 
@@ -69,7 +71,7 @@ export default function Router() {
   const routes = useRoutes([
     {
       path: 'login',
-      element: <LoginPage />,
+      element: <LoginPage1 />,
     },
 
     {
@@ -94,7 +96,7 @@ export default function Router() {
         { path: 'blog', element: <ProtectedRoute requiredRole={'Admin'} ><BlogPage /></ProtectedRoute>},
         { path: 'schedule', element: <ProtectedRoute requiredRole={'Admin'} ><Scheduler /></ProtectedRoute>},
         { path: 'patient/edit/:id', element: <ProtectedRoute requiredRole={'Admin'} ><EditPatients /></ProtectedRoute>},
-        { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'Admin'} ><PDFRecord /></ProtectedRoute>},
+        { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'Admin'} ><PatientViewPage /></ProtectedRoute>},
       ],
     },
     {
@@ -107,7 +109,7 @@ export default function Router() {
         { path: 'user', element:  <ProtectedRoute requiredRole={'User'} ><UserPage /></ProtectedRoute>},
         { path: 'patient', element:  <ProtectedRoute requiredRole={'User'} ><PatientRecordPage /></ProtectedRoute>},
         { path: 'patient/edit/:id', element: <ProtectedRoute requiredRole={'User'} ><EditPatients /></ProtectedRoute>},
-        { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'User'} ><PDFRecord /></ProtectedRoute>},
+        { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'User'} ><PatientViewPage /></ProtectedRoute>},
       ],
     },
     {

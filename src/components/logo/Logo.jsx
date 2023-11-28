@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, Link } from '@mui/material';
-import brgyLogo from '../../assets/logo.png';
+import brgyLogo from '/assets/logo1.png';
 
 // ----------------------------------------------------------------------
 

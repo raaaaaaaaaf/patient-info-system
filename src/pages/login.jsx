@@ -11,20 +11,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { IconButton } from '@mui/material';
 import Iconify from '../components/iconify';
-import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
+import { IconButton } from '@mui/material';
 import { auth, db, provider } from '../firebase/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
-import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit">
       Patient Information System in Brgy. San Juan
       </Link>{' '}
       {new Date().getFullYear()}
@@ -37,11 +37,9 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
-  const [name, setName] = useState("");
+export default function LoginPage1() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
 
   const navigate = useNavigate()
 
@@ -75,34 +73,24 @@ export default function SignUp() {
 
   const signIn = async () => {
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(res.user, {
-        displayName: name,
-      });
-      await setDoc(doc(db, "users", res.user.uid), {
-        uid: res.user.uid,
-        displayName: name,
-        email: email,
-        password: password,
-        role: "User",
-      });
+      await signInWithEmailAndPassword(auth, email, password);
       Swal.fire({
         icon: "success",
-        title: "Registered Successfully",
+        title: "Login Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
       navigate("/dashboard", { replace: true });
     } catch (error) {
       let customErrorMessage = "An error occurred.";
-
+    
       // Check the error code and customize the message accordingly
       if (error.code === "auth/invalid-email") {
         customErrorMessage = "Invalid email address. Please check your email.";
       } else if (error.code === "auth/user-not-found") {
         customErrorMessage = "User not found. Please sign up or try again.";
       } // Add more conditions for other Firebase error codes if needed
-
+    
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -112,6 +100,7 @@ export default function SignUp() {
     }
     
   };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -129,75 +118,58 @@ export default function SignUp() {
           <Iconify icon= {'devicon:google'}/>
           </IconButton>
           <Typography component="h1" variant="h5">
-            Sign up
+            Sign In
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  required
-                  fullWidth
-                  id="fullName"
-                  label="Full Name"
-                  onChange={(e) => setName(e.target.value)}
-                  autoFocus
-                />
-              </Grid>
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid> */}
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Grid>
-
-            </Grid>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
             <Button
               onClick={signIn}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Sign In
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
               <Grid item>
-                <Link to={'/login'} variant="body2">
-                  Already have an account? Sign in
+                <Link to={'/register'} variant="body2">
+                  {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
