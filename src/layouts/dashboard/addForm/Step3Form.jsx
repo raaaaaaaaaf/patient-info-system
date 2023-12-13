@@ -33,7 +33,7 @@ export default function Step3Form() {
             onChange={handleInputChange}
             label="Diagnosis:"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
 
@@ -45,7 +45,7 @@ export default function Step3Form() {
             onChange={handleInputChange}
             label="Medication / Treatment:"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12}>
@@ -57,7 +57,7 @@ export default function Step3Form() {
             onChange={handleInputChange}
             label="Laboratory Findings / Impression:"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
 
@@ -69,7 +69,7 @@ export default function Step3Form() {
             onChange={handleInputChange}
             label="Name of Health Care Provider:"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -81,7 +81,7 @@ export default function Step3Form() {
             onChange={handleInputChange}
             label="Performed Laboratory Test"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         

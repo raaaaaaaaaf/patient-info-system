@@ -21,6 +21,8 @@ import Scheduler from './pages/Scheduler';
 import UserDashboardAppPage from './pages/UserDashboardAppPage';
 import PatientViewPage from './pages/PatientViewPage.jsx';
 import LoginPage1 from './pages/login.jsx';
+import SeniorRecordPage from './pages/SeniorRecordPage.jsx';
+import PregnancyRecordPage from './pages/PregnancyRecordPage.jsx';
 
 
 
@@ -69,20 +71,7 @@ export default function Router() {
 
 
   const routes = useRoutes([
-    {
-      path: 'login',
-      element: <LoginPage1 />,
-    },
 
-    {
-      path: 'register',
-      element: <RegisterPage />,
-    },
-    {
-      path: '/',
-      // Redirect to the login page when accessing the root URL
-      element: <Navigate to="/login" replace />,
-    },
     {
       path: '/dashboard',
       element:  <DashboardLayout />,
@@ -91,13 +80,33 @@ export default function Router() {
         { path: 'app', element: <ProtectedRoute requiredRole={'Admin'} ><DashboardAppPage /></ProtectedRoute> },
         { path: 'add', element: <ProtectedRoute requiredRole={'Admin'} ><AddPatient /></ProtectedRoute>},
         { path: 'user', element:  <ProtectedRoute requiredRole={'Admin'} ><UserPage /></ProtectedRoute>},
+
         { path: 'patient', element:  <ProtectedRoute requiredRole={'Admin'} ><PatientRecordPage /></ProtectedRoute>},
+        { path: 'patient/edit/:id', element: <ProtectedRoute requiredRole={'Admin'} ><EditPatients /></ProtectedRoute>},
+        { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'Admin'} ><PatientViewPage /></ProtectedRoute>},
+
+        { path: 'senior', element:  <ProtectedRoute requiredRole={'Admin'} ><SeniorRecordPage /></ProtectedRoute>},
+        { path: 'senior/edit/:id', element: <ProtectedRoute requiredRole={'Admin'} ><EditPatients /></ProtectedRoute>},
+        { path: 'senior/view/:id', element: <ProtectedRoute requiredRole={'Admin'} ><PatientViewPage /></ProtectedRoute>},
+
+        { path: 'pregnancy', element:  <ProtectedRoute requiredRole={'Admin'} ><PregnancyRecordPage /></ProtectedRoute>},
+        { path: 'pregnancy/edit/:id', element: <ProtectedRoute requiredRole={'Admin'} ><EditPatients /></ProtectedRoute>},
+        { path: 'pregnancy/view/:id', element: <ProtectedRoute requiredRole={'Admin'} ><PatientViewPage /></ProtectedRoute>},
+
         { path: 'products', element: <ProtectedRoute requiredRole={'Admin'} ><ProductsPage /></ProtectedRoute>},
         { path: 'blog', element: <ProtectedRoute requiredRole={'Admin'} ><BlogPage /></ProtectedRoute>},
         { path: 'schedule', element: <ProtectedRoute requiredRole={'Admin'} ><Scheduler /></ProtectedRoute>},
-        { path: 'patient/edit/:id', element: <ProtectedRoute requiredRole={'Admin'} ><EditPatients /></ProtectedRoute>},
-        { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'Admin'} ><PatientViewPage /></ProtectedRoute>},
+
       ],
+    },
+    {
+      path: 'login',
+      element: <LoginPage1 />,
+    },
+
+    {
+      path: 'register',
+      element: <RegisterPage />,
     },
     {
       path: '/officer',

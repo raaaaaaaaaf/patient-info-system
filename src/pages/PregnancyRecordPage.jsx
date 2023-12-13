@@ -31,7 +31,7 @@ import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
 import { Link } from "react-router-dom";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import avt from "../assets/avatar_1.jpg";
 import Swal from "sweetalert2";
@@ -84,7 +84,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PatientRecordPage() {
+export default function PregnancyRecordPage() {
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -101,28 +101,33 @@ export default function PatientRecordPage() {
 
   const [patientList, setPatientList] = useState([]);
 
-  const recordRef = collection(db, "recordData");
+ 
 
   const { setFormId, editData, setEditData } = useContext(EditFormContext);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getPatientList();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const data = [];
+        const dataRef = query(collection(db, "recordData"), where("type", "==", "Pregnants"));
+        const dataSnap = await getDocs(dataRef);
+        dataSnap.forEach((doc) => {
+          data.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        setPatientList(data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  const getPatientList = async () => {
-    try {
-      const data = await getDocs(recordRef);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setPatientList(filteredData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    fetchData();
+  }, []);
 
   const deletePatients = async (id) => {
     const recordDoc = doc(db, "recordData", id);
@@ -202,7 +207,7 @@ export default function PatientRecordPage() {
   return (
     <>
       <Helmet>
-        <title> Patient Record | Patient Information System </title>
+        <title> Pregnancy Record | Patient Information System </title>
       </Helmet>
 
       <Container>
@@ -213,7 +218,7 @@ export default function PatientRecordPage() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Patients
+          Pregnancy
           </Typography>
         </Stack>
 

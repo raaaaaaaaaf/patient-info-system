@@ -6,9 +6,27 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useContext } from "react";
 import { EditFormContext } from "../../../context/EditContext";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function Step1Form() {
-  const { formData, setFormData, editData } = useContext(EditFormContext);
+  const { formData, setFormData, editData, cstatus, setCstatus, bod, setBod, sex, setSex, bloodType, setBloodType } = useContext(EditFormContext);
+
+  
+  const handleCivilChange = (event) => {
+    setCstatus(event.target.value);
+  };
+  const handleSexChange = (event) => {
+    setSex(event.target.value);
+  };
+  const handleBloodChange = (event) => {
+    setBloodType(event.target.value);
+  };
+
+  const handleBodChange = (date) => {
+    setBod(date);
+  };
 
   // Define the handleInputChange function to update formData
   const handleInputChange = (e) => {
@@ -61,7 +79,7 @@ export default function Step1Form() {
             label="Full Name"
             fullWidth
             autoComplete="given-name"
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -72,33 +90,46 @@ export default function Step1Form() {
             onChange={handleInputChange}
             label="Suffix (e.g.Js.,Sr.,II,III)"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="sex"
-            name="sex"
-            value={formData.sex}
-            onChange={handleInputChange}
-            label="Sex"
-            fullWidth
-            variant="standard"
-          />
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Sex</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={sex}
+              label="Age"
+              onChange={handleSexChange}
+            >
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
+
+            </Select>
+          </FormControl>
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="bloodtype"
-            name="bloodtype"
-            value={formData.bloodtype}
-            onChange={handleInputChange}
-            label="Blood Type"
-            fullWidth
-            variant="standard"
-          />
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Blood Types</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={bloodType}
+              label="Age"
+              onChange={handleBloodChange}
+            >
+              <MenuItem value={"A"}>A+</MenuItem>
+              <MenuItem value={"A-"}>A-</MenuItem>
+              <MenuItem value={"B+"}>B+</MenuItem>
+              <MenuItem value={"B-"}>B-</MenuItem>
+              <MenuItem value={"O+"}>O+</MenuItem>
+              <MenuItem value={"O-"}>O-</MenuItem>
+              <MenuItem value={"AB+"}>AB+</MenuItem>
+              <MenuItem value={"AB-"}>AB-</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -110,7 +141,7 @@ export default function Step1Form() {
             onChange={handleInputChange}
             label="Age"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -122,21 +153,19 @@ export default function Step1Form() {
             onChange={handleInputChange}
             label="Residential Address"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="bod"
-            name="bod"
-            value={formData.bod}
-            onChange={handleInputChange}
-            label="Birth Date"
-            fullWidth
-            variant="standard"
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Date of Birth"
+              value={bod}
+              onChange={handleBodChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -147,20 +176,24 @@ export default function Step1Form() {
             onChange={handleInputChange}
             label="Birth Place"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="civil"
-            name="civil"
-            value={formData.civil}
-            onChange={handleInputChange}
-            label="Civil Status"
-            fullWidth
-            variant="standard"
-          />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Civil Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={cstatus}
+              label="Age"
+              onChange={handleCivilChange}
+            >
+              <MenuItem value={"Single"}>Single</MenuItem>
+              <MenuItem value={"Married"}>Married</MenuItem>
+              <MenuItem value={"Widowed"}>Widowed</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -171,7 +204,7 @@ export default function Step1Form() {
             onChange={handleInputChange}
             label="Contact No."
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
       </Grid>

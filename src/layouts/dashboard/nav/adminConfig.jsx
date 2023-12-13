@@ -18,8 +18,18 @@ const navConfig = [
     icon: <Iconify icon={'mdi:user'}/>,
   },
   {
-    title: 'Patients Information',
+    title: 'All Patients Record',
     path: '/dashboard/patient',
+    icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
+  },
+  {
+    title: 'Senior Citizen Record',
+    path: '/dashboard/senior',
+    icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
+  },
+  {
+    title: 'Pregnancy Record',
+    path: '/dashboard/pregnancy',
     icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
   },
   {

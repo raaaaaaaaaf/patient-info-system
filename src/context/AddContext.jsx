@@ -37,8 +37,14 @@ export function AddFormProvider ({children}) {
 
 
     })
+    const [bod, setBod] = useState(null);
+    const [cstatus, setCstatus] = useState('')
+    const [patient, setPatient] = useState('')
+    const [sex, setSex] = useState('')
+    const [bloodType, setBloodType] = useState('')
+    const [staff, setStaff] = useState('')
     return (
-        <AddFormContext.Provider value={{formData,setFormData}}>
+        <AddFormContext.Provider value={{formData, setFormData, bod, setBod, cstatus, setCstatus, patient, setPatient, sex, setSex, bloodType, setBloodType, staff, setStaff}}>
             {children}
         </AddFormContext.Provider>
     )

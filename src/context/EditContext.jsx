@@ -32,9 +32,15 @@ export function EditFormProvider ({children}) {
     const [formId, setFormId] = useState("");
 
     const [editData, setEditData] = useState({})
+    const [bod, setBod] = useState(null);
+    const [cstatus, setCstatus] = useState('')
+    const [patient, setPatient] = useState('')
+    const [sex, setSex] = useState('')
+    const [bloodType, setBloodType] = useState('')
+    const [staff, setStaff] = useState('')
     
     return (
-        <EditFormContext.Provider value={{formData, setFormData, formId, setFormId, editData, setEditData}}>
+        <EditFormContext.Provider value={{formData, setFormData, formId, setFormId, editData, setEditData, bod, setBod, cstatus, setCstatus, patient, setPatient, sex, setSex, bloodType, setBloodType, staff, setStaff}}>
             {children}
         </EditFormContext.Provider>
     )

@@ -199,7 +199,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User | Patient Information System </title>
       </Helmet>
 
       <Container>

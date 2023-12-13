@@ -38,7 +38,7 @@ function getStepContent(step) {
 
 export default function AddPatient() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const { formData, setFormData } = useContext(AddFormContext);
+  const { formData, bod, cstatus, patient, sex, bloodType, staff } = useContext(AddFormContext);
   const {userData} = useContext(AuthContext)
   const nav = useNavigate();
 
@@ -48,13 +48,9 @@ export default function AddPatient() {
       // Define an array of required fields
   const requiredFields = [
     'fullName',
-    'sex',
-    'bloodtype',
     'age',
     'address',
-    'bod',
     'bop',
-    'civil',
     'cp',
     'bp',
     'temp',
@@ -89,13 +85,13 @@ export default function AddPatient() {
       await addDoc(recordRef, {
         fullName: formData.fullName,
         suffix: formData.suffix,
-        sex: formData.sex,
-        bloodtype: formData.bloodtype,
+        sex: sex,
+        bloodType: bloodType,
         age: formData.age,
         address: formData.address,
-        bod: formData.bod,
+        bod: bod.toDate(),
         bop: formData.bop,
-        civil: formData.civil,
+        civil: cstatus,
         cp: formData.cp,
         //Step2
         bp: formData.bp,
@@ -108,6 +104,8 @@ export default function AddPatient() {
         type: formData.type,
         staff: formData.staff,
         chief: formData.chief,
+        type: patient,
+        staff: staff,
         //step3
         diagnosis: formData.diagnosis,
         medication: formData.medication,

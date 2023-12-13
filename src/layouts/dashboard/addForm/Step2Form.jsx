@@ -1,31 +1,41 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { useContext } from 'react';
-import { AddFormContext } from '../../../context/AddContext';
+import * as React from "react";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { useContext } from "react";
+import { AddFormContext } from "../../../context/AddContext";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function Step2Form() {
-    const {formData, setFormData} = useContext(AddFormContext);
+  const { formData, setFormData, patient, setPatient, staff, setStaff } = useContext(AddFormContext);
 
-    // Define the handleInputChange function to update formData
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-        }));
-    };
+  const [age, setAge] = React.useState('')
+
+  const handleChange = (event) => {
+    setPatient(event.target.value);
+  };
+
+  const handleStaffChange = (event) => {
+    setStaff(event.target.value);
+  };
+
+  // Define the handleInputChange function to update formData
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         ASSESSMENT
       </Typography>
       <Grid container spacing={3}>
-        
-      <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="bp"
@@ -34,7 +44,7 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Blood Pressure"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -47,7 +57,7 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Temperature"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -60,7 +70,7 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Pulse Rate"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
 
@@ -74,7 +84,7 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Weight"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
 
@@ -88,7 +98,7 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Height"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -101,10 +111,9 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Body Mass Index"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
-
 
         <Grid item xs={12} sm={6}>
           <TextField
@@ -115,7 +124,7 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Nature of visit"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -127,10 +136,10 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Type of Consultation / Purpose of visit"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="staff"
@@ -139,10 +148,10 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Name of Attending Provider"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="chief"
@@ -151,8 +160,41 @@ export default function Step2Form() {
             onChange={handleInputChange}
             label="Chief Complaints"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Select Type Patient</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={patient}
+              label="Age"
+              onChange={handleChange}
+            >
+              <MenuItem value={"Patient"}>Patient</MenuItem>
+              <MenuItem value={"Senior Citizen"}>Senior Citizen</MenuItem>
+              <MenuItem value={"Pregnants"}>Pregnants</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Staff</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={staff}
+              label="Age"
+              onChange={handleStaffChange}
+            >
+              <MenuItem value={"(Doctor) Arriva"}>(Doctor) Arriva</MenuItem>
+              <MenuItem value={"(Nurse) Claudia Hope Tayabas"}>(Nurse) Claudia Hope Tayabas</MenuItem>
+              <MenuItem value={"(Midwife) Marifie Baslot"}>(Midwife) Marifie Baslot</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </React.Fragment>
