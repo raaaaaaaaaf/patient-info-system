@@ -72,8 +72,10 @@ export default function Router() {
 
 
   const routes = useRoutes([
-
-
+    {
+      path: '/',
+      element: <LoginPage1 />,
+    },
     {
       path: '/dashboard',
       element:  <DashboardLayout />,

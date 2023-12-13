@@ -190,7 +190,7 @@ export default function Step2Form() {
               label="Age"
               onChange={handleStaffChange}
             >
-              <MenuItem value={"(Doctor) Arriva"}>(Doctor) Arriva</MenuItem>
+              <MenuItem value={"(Doctor)Charito Arriva"}>(Doctor)Charito Arriva</MenuItem>
               <MenuItem value={"(Nurse) Claudia Hope Tayabas"}>(Nurse) Claudia Hope Tayabas</MenuItem>
               <MenuItem value={"(Midwife) Marifie Baslot"}>(Midwife) Marifie Baslot</MenuItem>
             </Select>
