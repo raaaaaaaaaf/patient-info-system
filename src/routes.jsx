@@ -23,6 +23,7 @@ import PatientViewPage from './pages/PatientViewPage.jsx';
 import LoginPage1 from './pages/login.jsx';
 import SeniorRecordPage from './pages/SeniorRecordPage.jsx';
 import PregnancyRecordPage from './pages/PregnancyRecordPage.jsx';
+import MonthlyReportPage from './pages/MonthlyReportPage.jsx';
 
 
 
@@ -72,6 +73,7 @@ export default function Router() {
 
   const routes = useRoutes([
 
+
     {
       path: '/dashboard',
       element:  <DashboardLayout />,
@@ -95,6 +97,7 @@ export default function Router() {
 
         { path: 'products', element: <ProtectedRoute requiredRole={'Admin'} ><ProductsPage /></ProtectedRoute>},
         { path: 'blog', element: <ProtectedRoute requiredRole={'Admin'} ><BlogPage /></ProtectedRoute>},
+        { path: 'monthly', element: <ProtectedRoute requiredRole={'Admin'} ><MonthlyReportPage /></ProtectedRoute>},
         { path: 'schedule', element: <ProtectedRoute requiredRole={'Admin'} ><Scheduler /></ProtectedRoute>},
 
       ],
@@ -119,6 +122,16 @@ export default function Router() {
         { path: 'patient', element:  <ProtectedRoute requiredRole={'User'} ><PatientRecordPage /></ProtectedRoute>},
         { path: 'patient/edit/:id', element: <ProtectedRoute requiredRole={'User'} ><EditPatients /></ProtectedRoute>},
         { path: 'patient/view/:id', element: <ProtectedRoute requiredRole={'User'} ><PatientViewPage /></ProtectedRoute>},
+
+        { path: 'senior', element:  <ProtectedRoute requiredRole={'User'} ><SeniorRecordPage /></ProtectedRoute>},
+        { path: 'senior/edit/:id', element: <ProtectedRoute requiredRole={'User'} ><EditPatients /></ProtectedRoute>},
+        { path: 'senior/view/:id', element: <ProtectedRoute requiredRole={'User'} ><PatientViewPage /></ProtectedRoute>},
+
+        { path: 'pregnancy', element:  <ProtectedRoute requiredRole={'User'} ><PregnancyRecordPage /></ProtectedRoute>},
+        { path: 'pregnancy/edit/:id', element: <ProtectedRoute requiredRole={'User'} ><EditPatients /></ProtectedRoute>},
+        { path: 'pregnancy/view/:id', element: <ProtectedRoute requiredRole={'User'} ><PatientViewPage /></ProtectedRoute>},
+
+        { path: 'monthly', element: <ProtectedRoute requiredRole={'User'} ><MonthlyReportPage /></ProtectedRoute>},
       ],
     },
     {

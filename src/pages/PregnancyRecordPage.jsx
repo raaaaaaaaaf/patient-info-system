@@ -31,12 +31,20 @@ import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
 import { Link } from "react-router-dom";
-import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import avt from "../assets/avatar_1.jpg";
 import Swal from "sweetalert2";
 import { EditFormContext } from "../context/EditContext";
 import Loading from "../components/loading/Loading";
+import { AuthContext } from "../context/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -101,7 +109,7 @@ export default function PregnancyRecordPage() {
 
   const [patientList, setPatientList] = useState([]);
 
- 
+  const { userData } = useContext(AuthContext);
 
   const { setFormId, editData, setEditData } = useContext(EditFormContext);
 
@@ -111,7 +119,10 @@ export default function PregnancyRecordPage() {
     const fetchData = async () => {
       try {
         const data = [];
-        const dataRef = query(collection(db, "recordData"), where("type", "==", "Pregnants"));
+        const dataRef = query(
+          collection(db, "recordData"),
+          where("type", "==", "Pregnants")
+        );
         const dataSnap = await getDocs(dataRef);
         dataSnap.forEach((doc) => {
           data.push({
@@ -218,7 +229,7 @@ export default function PregnancyRecordPage() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-          Pregnancy
+            Pregnancy
           </Typography>
         </Stack>
 
@@ -307,34 +318,39 @@ export default function PregnancyRecordPage() {
                             </TableCell>
 
                             <TableCell align="left">
-                              <Link
-                                to={`edit/${id}`}
-                                style={{
-                                  textDecoration: "none",
-                                  color: "black",
-                                }}
-                              >
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    setFormId(id), setEditData(patient);
-                                  }}
-                                >
-                                  <Iconify
-                                    icon={"material-symbols:edit-outline"}
-                                  />
-                                </IconButton>
-                              </Link>
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={() => deletePatients(id)}
-                              >
-                                <Iconify
-                                  icon={"material-symbols:delete-outline"}
-                                />
-                              </IconButton>
+                              {userData.role === "Admin" && (
+                                <>
+                                  <Link
+                                    to={`edit/${id}`}
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <IconButton
+                                      size="large"
+                                      color="inherit"
+                                      onClick={() => {
+                                        setFormId(id), setEditData(patient);
+                                      }}
+                                    >
+                                      <Iconify
+                                        icon={"material-symbols:edit-outline"}
+                                      />
+                                    </IconButton>
+                                  </Link>
+                                  <IconButton
+                                    size="large"
+                                    color="inherit"
+                                    onClick={() => deletePatients(id)}
+                                  >
+                                    <Iconify
+                                      icon={"material-symbols:delete-outline"}
+                                    />
+                                  </IconButton>
+                                </>
+                              )}
+
                               <Link
                                 to={`view/${id}`}
                                 style={{

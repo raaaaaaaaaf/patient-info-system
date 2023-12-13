@@ -13,14 +13,29 @@ const userConfig = [
     icon: <Iconify icon={'carbon:analytics'}/>,
   },
   {
-    title: 'Patients Information',
+    title: 'All Patients Record',
     path: '/officer/patient',
     icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
+  },
+  {
+    title: 'Senior Citizen Record',
+    path: '/officer/senior',
+    icon: <Iconify icon= {'healthicons:back-pain'}/>,
+  },
+  {
+    title: 'Pregnancy Record',
+    path: '/officer/pregnancy',
+    icon: <Iconify icon= {'fa6-solid:person-pregnant'}/>,
   },
   {
     title: 'Add Patient Information',
     path: '/officer/add',
     icon: <Iconify icon={'fluent:document-add-48-regular'}/>,
+  },
+  {
+    title: 'Monthly Report',
+    path: '/officer/monthly',
+    icon: <Iconify icon={'healthicons:calendar'}/>,
   },
 
 ];

@@ -37,6 +37,7 @@ import avt from "../assets/avatar_1.jpg";
 import Swal from "sweetalert2";
 import { EditFormContext } from "../context/EditContext";
 import Loading from "../components/loading/Loading";
+import { AuthContext } from "../context/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -104,6 +105,8 @@ export default function PatientRecordPage() {
   const recordRef = collection(db, "recordData");
 
   const { setFormId, editData, setEditData } = useContext(EditFormContext);
+
+  const { userData } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(true);
 
@@ -302,34 +305,39 @@ export default function PatientRecordPage() {
                             </TableCell>
 
                             <TableCell align="left">
-                              <Link
-                                to={`edit/${id}`}
-                                style={{
-                                  textDecoration: "none",
-                                  color: "black",
-                                }}
-                              >
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    setFormId(id), setEditData(patient);
-                                  }}
-                                >
-                                  <Iconify
-                                    icon={"material-symbols:edit-outline"}
-                                  />
-                                </IconButton>
-                              </Link>
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={() => deletePatients(id)}
-                              >
-                                <Iconify
-                                  icon={"material-symbols:delete-outline"}
-                                />
-                              </IconButton>
+                              {userData.role === "Admin" && (
+                                <>
+                                  <Link
+                                    to={`edit/${id}`}
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <IconButton
+                                      size="large"
+                                      color="inherit"
+                                      onClick={() => {
+                                        setFormId(id), setEditData(patient);
+                                      }}
+                                    >
+                                      <Iconify
+                                        icon={"material-symbols:edit-outline"}
+                                      />
+                                    </IconButton>
+                                  </Link>
+                                  <IconButton
+                                    size="large"
+                                    color="inherit"
+                                    onClick={() => deletePatients(id)}
+                                  >
+                                    <Iconify
+                                      icon={"material-symbols:delete-outline"}
+                                    />
+                                  </IconButton>
+                                </>
+                              )}
+
                               <Link
                                 to={`view/${id}`}
                                 style={{

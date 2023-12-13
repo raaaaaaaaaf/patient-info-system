@@ -25,17 +25,22 @@ const navConfig = [
   {
     title: 'Senior Citizen Record',
     path: '/dashboard/senior',
-    icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
+    icon: <Iconify icon= {'healthicons:back-pain'}/>,
   },
   {
     title: 'Pregnancy Record',
     path: '/dashboard/pregnancy',
-    icon: <Iconify icon= {'fluent:patient-20-filled'}/>,
+    icon: <Iconify icon= {'fa6-solid:person-pregnant'}/>,
   },
   {
     title: 'Add Patient Information',
     path: '/dashboard/add',
     icon: <Iconify icon={'fluent:document-add-48-regular'}/>,
+  },
+  {
+    title: 'Monthly Report',
+    path: '/dashboard/monthly',
+    icon: <Iconify icon={'healthicons:calendar'}/>,
   },
 ];
 
