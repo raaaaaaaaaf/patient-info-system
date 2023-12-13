@@ -74,7 +74,9 @@ const PatientViewPage = () => {
             justifyContent="center"
             mb={5}
           >
-             <Typography variant="subtitle1">Patient Information System (PISYS)</Typography>
+            <Typography variant="subtitle1">
+              Patient Information System (PISYS)
+            </Typography>
             <Typography variant="h4" gutterBottom>
               Individual Treatment Record
             </Typography>
@@ -87,7 +89,10 @@ const PatientViewPage = () => {
             <Grid item xs={6}>
               <Typography>Full Name: {patient.fullName}</Typography>
               <Typography>Age: {patient.age}</Typography>
-              <Typography>Birth Date: {patient.bod}</Typography>
+              <Typography>
+                Birth Date:{" "}
+                {new Date(patient.bod.seconds * 1000).toLocaleDateString("en-US")}
+              </Typography>
               <Typography>Address: {patient.address}</Typography>
               <Typography>Civil Status: {patient.civil}</Typography>
             </Grid>
